@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    dynamic:
+      primary: mysql1 #设置默认数据库源
+      strict: false #严格匹配数据源，默认为false，true未匹配到指定数据库时抛异常，false使用默认数据源
+      datasource:
+        mysql1:
+          driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+          url: jdbc:p6spy:mysql://localhost:3306/mysql?serverTimezone=Asia/Shanghai
+          username: root
+          password: root
+        mysql2:
+#          driver-class-name: oracle.jdbc.OracleDriver
+#          url: jdbc:oracle:thin:@192.168.1.103:1521:helowin
+#          username: g1rna
+#          password: 123456
+          driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+          url: jdbc:p6spy:mysql://localhost:3306/hos?serverTimezone=Asia/Shanghai
+          username: root
+          password: root
+
+
+mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  type-enums-package: com.hime.entity
+  global-config:
+    db-config:
+      logic-delete-value: 1
+      logic-not-delete-value: 0
