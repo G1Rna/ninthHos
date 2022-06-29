@@ -6,6 +6,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -17,44 +18,33 @@ import java.util.List;
 import java.util.Map;
 
 public class ExcelUtil {
-    //读取excel
-    public static Workbook readExcel(String filePath){
-        Workbook wb = null;
-        if(filePath==null){
-            return null;
-        }
-        String extString = filePath.substring(filePath.lastIndexOf("."));
-        InputStream is = null;
-        try {
-            is = new FileInputStream(filePath);
-            if(".xls".equals(extString)){
-                return wb = new HSSFWorkbook(is);
-            }else if(".xlsx".equals(extString)){
-                return wb = new XSSFWorkbook(is);
-            }else{
-                return wb = null;
-            }
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+    //读取excel
+    public static Workbook readExcel(MultipartFile files) throws Exception{
+        Workbook workbook = null;
+        if(files.getOriginalFilename().matches("^.+\\.(?i)(xls)$")){
+            workbook = new HSSFWorkbook(files.getInputStream());
+        }else if(files.getOriginalFilename().matches("^.+\\.(?i)(xlsx)$")){
+            workbook = new XSSFWorkbook(files.getInputStream());
+        }else{
+            throw new RuntimeException("格式不对");
         }
-        return wb;
+        return workbook;
     }
-    public static List<Map<String,String>> getDocInfoFromExcel(String filePath){
-        Workbook wb =null;
+    public static List<Map<String,String>> getDocInfoFromExcel(MultipartFile files)throws Exception{
+
+        Workbook workbook =null;
         Sheet sheet = null;
         Row row = null;
         List<Map<String,String>> list = null;
         String cellData = null;
         String columns[] = {"hosDocName","hosDept","hosDocTitle","hosDocMajor"};
-        wb = readExcel(filePath);
-        if(wb != null){
+        workbook = readExcel(files);
+        if(workbook != null){
             //用来存放表中数据
             list = new ArrayList<Map<String,String>>();
             //获取第一个sheet
-            sheet = wb.getSheetAt(0);
+            sheet = workbook.getSheetAt(0);
             //获取最大行数
             int rownum = sheet.getPhysicalNumberOfRows();
             //获取第一行

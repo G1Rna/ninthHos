@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--jquery引入-->
+    <script th:src="@{/js/jquery-1.11.0.js}" charset="utf-8"></script>
+    <meta charset="utf-8">
+    <title>录入医生信息</title>
+</head>
+<body>
+
+<div>
+    <form id="form1">
+        <input type="file"  id="files" name="files" multiple="multiple" class="input-file">
+        <br>
+        <button type="submit" onclick="add()" >提交</button>
+        <br>
+    </form>
+    <a href="LoginSuccess" >返回</a>
+</div>
+</body>
+<script>
+    function add() {
+        var formData = new FormData($("#form1")[0]);
+        $.ajax({
+            type: "POST",//方法类型
+            url: "importDocInfo",//url
+            // data: $('#form1').serialize(),
+            data: formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                alert(result)
+            }
+        })
+    }
+
+</script>
+</html>

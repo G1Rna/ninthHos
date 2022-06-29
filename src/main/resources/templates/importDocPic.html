@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!--jquery引入-->
+    <script th:src="@{/js/jquery-1.11.0.js}" charset="utf-8"></script>
+    <meta charset="utf-8">
+    <title>导入医生照片</title>
+</head>
+<body>
+
+<div>
+    <form id="form1">
+
+        <select id="system" onchange="selectSys()">
+            <option th:each="system,count:${systems}">[[${system}]]</option>
+        </select>
+
+        <select id="dept" name="dept" onchange="selectDocName()">
+            <option th:each="dept,count:${depts}">[[${dept}]]</option>
+        </select>
+        <select id="docName" name="docName">
+            <option th:each="docName,count:${docNames}">[[${docName}]]</option>
+        </select>
+        <br>
+        <input type="file"  id="file" name="file" multiple="multiple" class="input-file">
+        <br>
+        <button type="submit" onclick="sub()" >提交</button>
+        <br>
+
+    </form>
+    <a href="LoginSuccess" >返回</a>
+</div>
+</body>
+<script>
+    function sub() {
+        var formData = new FormData($("#form1")[0]);
+        $.ajax({
+            type: "POST",//方法类型
+            url: "uploadImage",//url
+            // data: $('#form1').serialize(),
+            data: formData,
+            async: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (result) {
+                alert(result)
+            }
+        })
+    }
+
+    function selectSys() {
+        var system = document.getElementById("system").value
+        $.ajax({
+            type: "POST",//方法类型
+            url: "getDeptBySys",//url
+            // data: $('#form1').serialize(),
+            data: {"system":system},
+            success: function (result) {
+                var deptSelect = document.getElementById("dept");
+                deptSelect.options.length = 0;
+                for (var i=0; i < result.length; i++) {
+                    var deptText = result[i];
+                    var option1 = document.createElement("option");
+                    var textNode = document.createTextNode(deptText);
+                    option1.appendChild(textNode);
+                    deptSelect.appendChild(option1);
+                }
+                selectDocName()
+            }
+        })
+    }
+    function selectDocName() {
+        var deptName = document.getElementById("dept").value
+        $.ajax({
+            type: "POST",//方法类型
+            url: "getDocNameByDpet",//url
+            // data: $('#form1').serialize(),
+            data: {"deptName":deptName},
+            success: function (result) {
+                var docNameSelect = document.getElementById("docName");
+                docNameSelect.options.length = 0;
+                for (var i=0; i < result.length; i++) {
+                    var docNameText = result[i];
+                    var option1 = document.createElement("option");
+                    var textNode = document.createTextNode(docNameText);
+                    option1.appendChild(textNode);
+                    docNameSelect.appendChild(option1);
+                }
+            }
+        })
+    }
+
+
+</script>
+</html>

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Mapper
-@DS("mysql2")
+@DS("mysql1")
 @Repository("DocInfoMapper")
 public interface DocInfoMapper extends BaseMapper<docInfo> {
     @Select("select * from t_doc_info")
@@ -27,6 +27,6 @@ public interface DocInfoMapper extends BaseMapper<docInfo> {
     @Select("select hos_sys from t_sys_dept where hos_dept = #{dept}")
     String getDocSys(String dept);
 
-    @Update("update hos_sys set hos_doc_pic = #{imgPath} where hos_dept = #{dept} and hos_doc_name = #{docName}")
+    @Update("update t_doc_info set hos_doc_pic = #{imgPath} where hos_dept = #{dept} and hos_doc_name = #{docName}")
     int uploadImage(String imgPath,String docName,String dept);
 }

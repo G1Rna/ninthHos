@@ -11,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -32,9 +33,8 @@ public class DocInfoServiceImpl extends ServiceImpl<DocInfoMapper,docInfo> imple
 
     @Override
     @Transactional
-    public int importDocInfo(String filePath){
-        filePath = "C:\\Users\\Administrator\\Desktop\\收集数据格式.xls";
-        List<Map<String,String>> mapList = ExcelUtil.getDocInfoFromExcel(filePath);
+    public int importDocInfo(@RequestParam("files") MultipartFile files)throws Exception{
+        List<Map<String,String>> mapList = ExcelUtil.getDocInfoFromExcel(files);
         for(Map<String,String> map:mapList){
             docInfo docInfo = new docInfo();
             docInfo.setHosDocName(map.get("hosDocName"));
@@ -71,8 +71,7 @@ public class DocInfoServiceImpl extends ServiceImpl<DocInfoMapper,docInfo> imple
             //若不存在该目录，则创建目录
             savePathFile.mkdir();
         }
-        //通过UUID生成唯一文件名
-        String filename = UUID.randomUUID().toString().replaceAll("-","") + "." + suffix;
+        String filename = dept+"_"+docName + "." + suffix;
         try {
             //将文件保存指定目录
             //file.transferTo(new File(savePath + filename));

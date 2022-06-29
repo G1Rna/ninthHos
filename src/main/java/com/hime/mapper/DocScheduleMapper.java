@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Mapper
-@DS("mysql1")
+@DS("mysql2")
 @Repository("DocScheduleMapper")
 public interface DocScheduleMapper extends BaseMapper<docScheduleInfo> {
     /*
