@@ -44,7 +44,11 @@
             contentType: false,
             processData: false,
             success: function (result) {
-                alert(result)
+                if (result==1){
+                    alert("成功上传照片！")
+                } else{
+                    alert("上传失败")
+                }
             }
         })
     }

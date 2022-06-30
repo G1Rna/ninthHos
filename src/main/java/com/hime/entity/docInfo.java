@@ -23,4 +23,18 @@ public class docInfo {
     private String hosDocDaily;
     private String hosDocStop;
     private String hosDocPic;
+
+
+    public String getHosDocPic() {
+
+        if(hosDocPic==null||hosDocPic.equals("")){
+            return "D:/img/HeadImages/暂无照片.png";
+        }
+
+        return hosDocPic;
+    }
+
+    public void setHosDocPic(String hosDocPic) {
+        this.hosDocPic = hosDocPic;
+    }
 }
