@@ -148,7 +148,13 @@ public class indexController {
 
         return "index";
     }
+    @RequestMapping("/getShowInfoForVue")
+    @ResponseBody
+    public List<docInfo> adminListForVue(Model model, HttpSession request) {
+        List<docInfo> docInfos = docScheduleService.getShowInfo();
 
+        return docInfos;
+    }
 
 
 
