@@ -1,0 +1,34 @@
+server:
+  port: 8002
+
+
+dubbo:
+  #消费者去哪里拿服务、暴露自己的名字
+  application:
+    name: sys-server
+  #注册中心地址
+  registry:
+    address: zookeeper://127.0.0.1:2181
+
+
+spring:
+  mvc:
+    static-path-pattern: /**
+  datasource:
+    dynamic:
+      primary: mysql2 #设置默认数据库源
+      strict: false #严格匹配数据源，默认为false，true未匹配到指定数据库时抛异常，false使用默认数据源
+      datasource:
+        mysql2:
+          driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+          url: jdbc:p6spy:mysql://localhost:3306/hos?serverTimezone=Asia/Shanghai
+          username: root
+          password: root
+
+
+mybatis-plus:
+  type-enums-package: com.hime.entity
+  global-config:
+    db-config:
+      logic-delete-value: 1
+      logic-not-delete-value: 0
