@@ -22,6 +22,7 @@ public class docScheduleInfo {
     private String hosDocName;
     private String hosDocStop;
 
+
     public void setHosTime(String hosTime) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date date;

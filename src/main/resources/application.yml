@@ -3,7 +3,7 @@ spring:
     static-path-pattern: /**
   datasource:
     dynamic:
-      primary: mysql1 #设置默认数据库源
+      primary: mysql2 #设置默认数据库源
       strict: false #严格匹配数据源，默认为false，true未匹配到指定数据库时抛异常，false使用默认数据源
       datasource:
         mysql1:

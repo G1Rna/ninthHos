@@ -1,5 +1,6 @@
 package com.hime.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.hime.entity.*;
 import com.hime.service.DeptService;
 import com.hime.service.DocInfoService;
@@ -155,7 +156,14 @@ public class indexController {
 
         return docInfos;
     }
+    //转换为json字符串
+    @RequestMapping("/getShowInfoForVueJsonString")
+    @ResponseBody
+    public String adminListForVueJsonString(Model model, HttpSession request) {
+        List<docInfo> docInfos = docScheduleService.getShowInfo();
 
-
+        String jsonString = JSONObject.toJSONString(docInfos);
+        return jsonString;
+    }
 
 }
