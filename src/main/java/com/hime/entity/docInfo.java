@@ -8,10 +8,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 
 @Data
-@TableName
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 public class docInfo {
     private int id;
     private String hosTime;
