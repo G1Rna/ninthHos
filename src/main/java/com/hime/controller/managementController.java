@@ -30,13 +30,13 @@ public class managementController {
     public String management() {
         return "userPage";
     }
-    //  导入医生信息
+    //  导入医生信息页面
     @RequestMapping("/importDocInfoPage")
     public String importDocInfoPage() {
 
         return "importDocInfo";
     }
-    //  导入医生照片
+    //  导入医生照片页面
     @RequestMapping("/importDocPicPage")
     public String importDocPicPage(HttpServletRequest request) {
 
@@ -48,7 +48,6 @@ public class managementController {
         request.setAttribute("docNames",docNames);
         return "importDocPic";
     }
-
 
     /**
      * 根据EXCEL导入信息

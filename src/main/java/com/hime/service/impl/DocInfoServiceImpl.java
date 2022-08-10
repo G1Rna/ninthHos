@@ -1,8 +1,12 @@
 package com.hime.service.impl;
 
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.context.AnalysisContext;
+import com.alibaba.excel.event.AnalysisEventListener;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hime.entity.docExcelImportInfo;
 import com.hime.entity.docInfo;
 import com.hime.mapper.DocInfoMapper;
 import com.hime.service.DocInfoService;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -34,18 +39,21 @@ public class DocInfoServiceImpl extends ServiceImpl<DocInfoMapper,docInfo> imple
     @Override
     @Transactional
     public int importDocInfo(@RequestParam("files") MultipartFile files)throws Exception{
-        List<Map<String,String>> mapList = ExcelUtil.getDocInfoFromExcel(files);
-        for(Map<String,String> map:mapList){
-            docInfo docInfo = new docInfo();
-            docInfo.setHosDocName(map.get("hosDocName"));
-            docInfo.setHosDept(map.get("hosDept"));
-            docInfo.setHosDocTitle(map.get("hosDocTitle"));
-            docInfo.setHosDocMajor(map.get("hosDocMajor"));
-            docInfo.setHosSys(docInfoMapper.getDocSys(map.get("hosDept")));
+        EasyExcel.read(files.getInputStream(), docExcelImportInfo.class, new AnalysisEventListener<docExcelImportInfo>() {
+                    //重写子类方法
+                    @Override
+                    public void invoke(docExcelImportInfo docExcelImportInfo, AnalysisContext analysisContext) {
+                        docExcelImportInfo.setHosSys(docInfoMapper.getDocSys(docExcelImportInfo.getHosDept()));
+                        docInfoMapper.deleteDocInfo(docExcelImportInfo);
+                        docInfoMapper.insertDocInfo(docExcelImportInfo);
+                    }
+                    //重写子类方法
+                    @Override
+                    public void doAfterAllAnalysed(AnalysisContext analysisContext) {
 
-            docInfoMapper.deleteDocInfo(docInfo);
-            docInfoMapper.insertDocInfo(docInfo);
-        }
+                    }
+                }
+        ).sheet().doRead();
         return 1;
     }
 
